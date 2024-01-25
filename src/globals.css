@@ -8,11 +8,7 @@ body,html,:root {
 } 
 
  #root {
-    @apply flex flex-col h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-900 via-slate-900 to-black;
-  }
-
- p, h1, h2, h3, h4, h5, h6, span, div, li, ul, ol, button, input, textarea, select, option, label, form, fieldset, legend, table, td, th, tr, thead, tbody, tfoot, caption, article, aside, footer, header, nav, section, time, mark, audio, video, details, summary, figcaption, figure, menu, menuitem, address, blockquote, canvas, dd, dl, dt, embed, fieldset, figcaption, figure, hr, iframe, ins, kbd, keygen, map, meter, object, output, progress, q, ruby, rp, rt, ruby, s, samp, small, strong, sub, sup, var, wbr {
-    @apply text-white;
+    @apply flex flex-col h-full bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-indigo-300 via-violet-300 to-stone-100 dark:bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-teal-500 via-sky-400 to-blue-900;
   }
 
 @layer base {
