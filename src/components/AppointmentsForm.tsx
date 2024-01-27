@@ -16,7 +16,6 @@ import { useState } from 'react'
 export const AppointmentsForm = () => {
 
     const [selected, setSelected] = useState<Date>();
-    const [date, setDate] = useState<Date | undefined>(new Date())
     const [timeValue, setTimeValue] = useState<string>('00:00')
 
      const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (
@@ -59,9 +58,6 @@ export const AppointmentsForm = () => {
          setSelected(newDate)
      }
 
-const tags = Array.from({ length: 50 }).map(
-    (_, i, a) => `v1.2.0-beta.${a.length - i}`
-)
     return (
         <Card className="flex flex-col p-4 border-gray-900">
             <CardHeader>
@@ -70,9 +66,10 @@ const tags = Array.from({ length: 50 }).map(
                     Add new appointments here. Save to add to list.
                 </CardDescription>
             </CardHeader>
-            <CardContent className="flex justify-between items-center gap-4 space-y-2 h-1/2">
-                <ScrollArea className="flex-1 h-44 rounded-md border">
+            <CardContent className="flex justify-around items-center gap-4 space-y-2 h-1/2">
+                <ScrollArea className="flex-1 h-44 rounded-md border max-w-[40%]">
                     <div className="flex flex-col gap-2 p-4 h-[80%]">
+                        <p>Select contact</p>
                         <a href="#" className="text-primary bg-muted-foreground/20 p-2 rounded">dadas</a>
                         <a href="#" className="text-primary bg-muted-foreground/20 p-2 rounded">dadas</a>
                         <a href="#" className="text-primary bg-muted-foreground/20 p-2 rounded">dadas</a>
@@ -89,7 +86,7 @@ const tags = Array.from({ length: 50 }).map(
                     mode="single"
                     selected={selected}
                     onSelect={handleDaySelect}
-                    className="rounded-md border"
+                    className=" rounded-md border"
                     footer={
                         <>
                             <Input

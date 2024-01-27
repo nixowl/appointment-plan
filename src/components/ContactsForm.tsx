@@ -4,55 +4,50 @@ import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from './ui/card'
 import { Input } from './ui/input'
 import { Label } from '@/components/ui/label'
 import { ContactCard } from './ContactCard'
-import { createContext, useState } from 'react'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+// import * as z from 'zod'
+import { Contact } from '@/types'
+import { useState } from 'react'
 
 export const ContactsForm = () => {
-    const [name, setName] = useState('')
+    const [givenName, setGivenName] = useState('')
+    const [familyName, setFamilyName] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
+    const [contacts, setContacts] = useState<Contact[]>([])
 
-    // Username validation
-    const formSchema = z.object({
-        name: z.string().min(1).max(40),
-        phone: z.string().min(10).max(14),
-        email: z.string().email(),
-    })
+    // // Contact form validation
+    // const formSchema = z.object({
+    //     name: z.string().min(1).max(40),
+    //     phone: z.string().min(10).max(14),
+    //     email: z.string().email(),
+    // })
 
-    const validateFormData = (inputs: unknown) => {
-        const isValidData = formSchema.parse(inputs)
-        return isValidData
-    }
+    // const validateFormData = (inputs: unknown) => {
+    //     const isValidData = formSchema.parse(inputs)
+    //     return isValidData
+    // }
 
-    type Contact = {
-        name: string
-        email: string
-        phone: string
-    }
-
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        if (!givenName && !familyName && !email && !phone) return;
+        console.log('click')
         e.preventDefault()
-        const contact: Contact = {
-            name: name,
+        console.log(contacts)
+        const newContact: Contact = {
+            givenName: givenName,
+            familyName: familyName,
             email: email,
             phone: phone,
         }
-        console.log(contact)
-        try {
-            const isValidData = validateFormData(contact)
-            console.log(isValidData)
-        } catch (error) {
-            console.log('Error validating data', error)
-        }
+        console.log(newContact)
+
+        setContacts([...contacts, newContact])
+        console.log(contacts)
     }
 
     return (
@@ -65,44 +60,70 @@ export const ContactsForm = () => {
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                    <div className="space-y-1">
-                        <Label htmlFor="name">Name</Label>
-                        <Input id="name" type="text" placeholder="John Doe" />
-                    </div>
-                    <div className="space-y-1">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                            id="email"
-                            placeholder="johndoe@mail.com"
-                            type="email"
-                        />
-                    </div>
-                    <div className="space-y-1">
-                        <Label htmlFor="email">Phone number</Label>
-                        <Input
-                            id="email"
-                            placeholder="555-555-5555"
-                            type="tel"
-                        />
-                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <div className="space-y-1">
+                            <Label htmlFor="given-name">First name</Label>
+                            <Input
+                                autoComplete="given-name"
+                                id="given-name"
+                                type="text"
+                                placeholder="John"
+                                value={givenName}
+                                onChange={(e) => setGivenName(e.target.value)}
+                            />
+                            <Label htmlFor="last-name">Last name</Label>
+                            <Input
+                                autoComplete="family-name"
+                                id="last-name"
+                                type="text"
+                                placeholder="Doe"
+                                value={familyName}
+                                onChange={(e) => setFamilyName(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <Label htmlFor="email">Email</Label>
+                            <Input
+                                autoComplete='email'
+                                id="email"
+                                placeholder="johndoe@mail.com"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-1">
+                            <Label htmlFor="phone">Phone number</Label>
+                            <Input
+                                autoComplete='tel'
+                                id="phone"
+                                placeholder="555-555-5555"
+                                type="tel"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                            />
+                        </div>
+                        <Button variant="default" type="submit">
+                            Add contact
+                        </Button>
+                    </form>
                 </CardContent>
 
-                <CardFooter>
-                    <Button variant="default" type="submit">
-                        Add contact
-                    </Button>
-                </CardFooter>
                 <Separator />
                 <CardHeader>
                     <CardTitle>Contacts</CardTitle>
                     <CardDescription>List of contacts</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                    <ContactCard
-                        name="Pedro Duarte"
-                        email="email@email.com"
-                        phone="0534838843834"
-                    />
+                    {contacts.map((contact, index) => (
+                        <ContactCard
+                            key={index}
+                            givenName={contact.givenName}
+                            familyName={contact.familyName}
+                            email={contact.email}
+                            phone={contact.phone}
+                        />
+                    ))}
                 </CardContent>
             </Card>
         </>

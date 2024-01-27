@@ -6,13 +6,12 @@ import { AppointmentsForm } from './components/AppointmentsForm'
 
 
 function App() {
-
     return (
         <>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                 <ThemeToggle />
                 <div className="flex justify-center h-full">
-                    <Tabs defaultValue="contacts" className="w-[70%]">
+                    <Tabs defaultValue="contacts" className="w-[60%]">
                         <TabsList className="grid w-full grid-cols-2 bg-primary-foreground/60 ">
                             <TabsTrigger value="contacts">Contacts</TabsTrigger>
                             <TabsTrigger value="appointments">
