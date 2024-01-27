@@ -9,14 +9,16 @@ import {
     CardTitle,
 } from './ui/card'
 import { Input } from './ui/input'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Calendar } from '@/components/ui/calendar'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import ContactsContext from './context/ContactsContext'
+import { ContactCard } from './ContactCard'
 
 export const AppointmentsForm = () => {
 
     const [selected, setSelected] = useState<Date>();
     const [timeValue, setTimeValue] = useState<string>('00:00')
+    const { contacts } = useContext(ContactsContext)
 
      const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (
          e
@@ -66,42 +68,42 @@ export const AppointmentsForm = () => {
                     Add new appointments here. Save to add to list.
                 </CardDescription>
             </CardHeader>
-            <CardContent className="flex justify-around items-center gap-4 space-y-2 h-1/2">
-                <ScrollArea className="flex-1 h-44 rounded-md border max-w-[40%]">
-                    <div className="flex flex-col gap-2 p-4 h-[80%]">
-                        <p>Select contact</p>
-                        <a href="#" className="text-primary bg-muted-foreground/20 p-2 rounded">dadas</a>
-                        <a href="#" className="text-primary bg-muted-foreground/20 p-2 rounded">dadas</a>
-                        <a href="#" className="text-primary bg-muted-foreground/20 p-2 rounded">dadas</a>
-                        <a href="#" className="text-primary bg-muted-foreground/20 p-2 rounded">dadas</a>
-                        <a href="#" className="text-primary bg-muted-foreground/20 p-2 rounded">dadas</a>
-                        <a href="#" className="text-primary bg-muted-foreground/20 p-2 rounded">dadas</a>
-                        <a href="#" className="text-primary bg-muted-foreground/20 p-2 rounded">dadas</a>
-                        <a href="#" className="text-primary bg-muted-foreground/20 p-2 rounded">dadas</a>
-                        <a href="#" className="text-primary bg-muted-foreground/20 p-2 rounded">dadas</a>
-                        
-                    </div>
-                </ScrollArea>
-                <Calendar
-                    mode="single"
-                    selected={selected}
-                    onSelect={handleDaySelect}
-                    className=" rounded-md border"
-                    footer={
-                        <>
-                            <Input
-                                type="time"
-                                value={timeValue}
-                                onChange={handleTimeChange}
-                            />
-                            <p>
-                                {' '}
-                                Selected date:{' '}
-                                {selected ? selected.toLocaleString() : 'none'}
-                            </p>
-                        </>
-                    }
-                />
+            <CardContent className="flex justify-evenly gap-4 space-y-2 h-1/2">
+                <div className="flex flex-col gap-4 w-1/2 items-stretch max-h-[30rem] overflow-y-scroll rounded-md border p-4">
+                    {contacts.map((contact, index) => (
+                        <ContactCard
+                            key={index}
+                            givenName={contact.givenName}
+                            familyName={contact.familyName}
+                            email={contact.email}
+                            phone={contact.phone}
+                        />
+                    ))}
+                </div>
+                <div>
+                    <Calendar
+                        mode="single"
+                        selected={selected}
+                        onSelect={handleDaySelect}
+                        className="rounded-md border"
+                        footer={
+                            <>
+                                <Input
+                                    type="time"
+                                    value={timeValue}
+                                    onChange={handleTimeChange}
+                                />
+                                <p>
+                                    {' '}
+                                    Selected date:{' '}
+                                    {selected
+                                        ? selected.toLocaleString()
+                                        : 'none'}
+                                </p>
+                            </>
+                        }
+                    />
+                </div>
             </CardContent>
 
             <CardFooter>
