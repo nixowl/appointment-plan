@@ -12,14 +12,16 @@ import { Label } from '@/components/ui/label'
 import { ContactCard } from './ContactCard'
 // import * as z from 'zod'
 import { Contact } from '@/types'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import ContactsContext from './context/ContactsContext'
 
 export const ContactsForm = () => {
     const [givenName, setGivenName] = useState('')
     const [familyName, setFamilyName] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
-    const [contacts, setContacts] = useState<Contact[]>([])
+    const { contacts, setContacts } = useContext(ContactsContext)
+    
 
     // // Contact form validation
     // const formSchema = z.object({
@@ -34,9 +36,9 @@ export const ContactsForm = () => {
     // }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
         if (!givenName && !familyName && !email && !phone) return;
         console.log('click')
-        e.preventDefault()
         console.log(contacts)
         const newContact: Contact = {
             givenName: givenName,
@@ -52,7 +54,7 @@ export const ContactsForm = () => {
 
     return (
         <>
-            <Card className="flex flex-col p-4 border-gray-900">
+            <Card className="flex flex-col p-7 border rounded-md max-h-[87vh]">
                 <CardHeader>
                     <CardTitle>Contacts</CardTitle>
                     <CardDescription>
@@ -114,7 +116,7 @@ export const ContactsForm = () => {
                     <CardTitle>Contacts</CardTitle>
                     <CardDescription>List of contacts</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2">
+                <CardContent className="space-y-2 max-h-[30rem] overflow-y-scroll border rounded-md p-6">
                     {contacts.map((contact, index) => (
                         <ContactCard
                             key={index}
