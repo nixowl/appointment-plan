@@ -18,21 +18,22 @@ export const AppointmentsForm = () => {
 
     const [selected, setSelected] = useState<Date>();
     const [timeValue, setTimeValue] = useState<string>('00:00')
-    const [selectedContact, setSelectedContact] = useState<Contact>()
-    const [appointments, setAppointments] = useState()
+    const [selectedContact, setSelectedContact] = useState<Contact | undefined>(undefined)
+    const [appointments, setAppointments] = useState<Appointment[]>([])
     const { contacts } = useContext(ContactsContext)
 
-     const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (
-         e
-     ) => {
-         const time = e.target.value
+    const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+        const time = e.target.value
+        
          if (!selected) {
              setTimeValue(time)
              return
-         }
+        }
+        
          const [hours, minutes] = time
              .split(':')
-             .map((str) => parseInt(str, 10))
+            .map((str) => parseInt(str, 10))
+        
          const newSelectedDate = new Date(
              selected.getFullYear(),
              selected.getMonth(),
@@ -44,11 +45,13 @@ export const AppointmentsForm = () => {
          setTimeValue(time)
      }
 
-     const handleDaySelect = (date: Date | undefined) => {
+    const handleDaySelect = (date: Date | undefined) => {
+         
          if (!timeValue || !date) {
              setSelected(date)
              return
-         }
+        }
+        
          const [hours, minutes] = timeValue
              .split(':')
              .map((str) => parseInt(str, 10))
@@ -65,6 +68,8 @@ export const AppointmentsForm = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
+        if (!selectedContact || !selected) return
+
         const newAppointment: Appointment = {
             contact: selectedContact,
             date: selected,
@@ -72,6 +77,8 @@ export const AppointmentsForm = () => {
         }
         setAppointments([...appointments, newAppointment])
     }
+
+    const handleContactSelect = (contact: Contact) => setSelectedContact(contact);
 
     
 
@@ -83,43 +90,45 @@ export const AppointmentsForm = () => {
                     Add new appointments here. Save to add to list.
                 </CardDescription>
             </CardHeader>
-            <CardContent className="flex justify-evenly gap-4 space-y-2 h-1/2">
-                <form onSubmit={handleSubmit}>
-                    <div className="flex flex-1 flex-col gap-4 w-1/2 items-stretch max-h-[23.5rem] overflow-y-scroll overflow-x-clip rounded-md border mt-2 p-4">
-                        {contacts.map((contact, index) => (
-                            <ContactCard
-                                onClick={setSelectedContact()}
-                                key={index}
-                                givenName={contact.givenName}
-                                familyName={contact.familyName}
-                                email={contact.email}
-                                phone={contact.phone}
+            <CardContent className="flex justify-center">
+                <form onSubmit={handleSubmit} className="flex flex-col">
+                    <div className="flex gap-4">
+                        <div className="flex flex-col gap-4 max-h-[30rem] overflow-y-scroll rounded-md border p-4">
+                            {contacts.map((contact, index) => (
+                                <ContactCard
+                                    onClick={() => handleContactSelect(contact)}
+                                    key={index}
+                                    givenName={contact.givenName}
+                                    familyName={contact.familyName}
+                                    email={contact.email}
+                                    phone={contact.phone}
+                                />
+                            ))}
+                        </div>
+                        <div className="">
+                            <Calendar
+                                mode="single"
+                                selected={selected}
+                                onSelect={handleDaySelect}
+                                className="flex justify-center rounded-md border"
+                                footer={
+                                    <>
+                                        <Input
+                                            type="time"
+                                            value={timeValue}
+                                            onChange={handleTimeChange}
+                                        />
+                                        <p>
+                                            {' '}
+                                            Selected date:{' '}
+                                            {selected
+                                                ? selected.toLocaleString()
+                                                : 'none'}
+                                        </p>
+                                    </>
+                                }
                             />
-                        ))}
-                    </div>
-                    <div className="flex-2">
-                        <Calendar
-                            mode="single"
-                            selected={selected}
-                            onSelect={handleDaySelect}
-                            className="rounded-md border"
-                            footer={
-                                <>
-                                    <Input
-                                        type="time"
-                                        value={timeValue}
-                                        onChange={handleTimeChange}
-                                    />
-                                    <p>
-                                        {' '}
-                                        Selected date:{' '}
-                                        {selected
-                                            ? selected.toLocaleString()
-                                            : 'none'}
-                                    </p>
-                                </>
-                            }
-                        />
+                        </div>
                     </div>
                     <Button>Add appointment</Button>
                 </form>
@@ -130,7 +139,9 @@ export const AppointmentsForm = () => {
                 <CardTitle>Appointments</CardTitle>
                 <CardDescription>List of appointments</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2"></CardContent>
+            <CardContent className="space-y-2">
+               
+            </CardContent>
         </Card>
     )
 }
