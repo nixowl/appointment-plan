@@ -1,36 +1,35 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react'
-import { Contact } from '@/types';
-
-type ContactsProviderProps = {
-    children: ReactNode
-}
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { createContext } from 'react'
+import { Contact, Props } from '@/types'
 
 type ContactsContextType = {
     contacts: Contact[];
-    addContact: (contact: Contact) => void;
+    setContacts: Dispatch<SetStateAction<Contact[]>>
 }
 
-const ContactsContext = createContext<ContactsContextType>({
+const defaultContextValue: ContactsContextType = {
     contacts: [],
-    addContact: () => {},
-})
-
-const useContacts = () => {
-    return useContext(ContactsContext)
+    setContacts: () => {},
 }
 
-export const ContactsProvider: React.FC = ({ children }: ContactsProviderProps) => {
-    const [contacts, setContacts] = useState<Contact[]>([]);
+const ContactsContext = createContext<ContactsContextType>(defaultContextValue)
 
-    const addContact = (newContact: Contact) => { 
-        setContacts(prevContacts => [...prevContacts, newContact])
-    }
+export const ContactsProvider = ({ children }: Props) => {
+    const [contacts, setContacts] = useState<Contact[]>(() => {
+        const localData = localStorage.getItem('contacts')
+        return localData ? JSON.parse(localData) : []
+    })
+
+    useEffect(() => {
+        console.log('Updating localStorage with contacts:', contacts)
+        localStorage.setItem('contacts', JSON.stringify(contacts))
+    }, [contacts])
 
     return (
-        <ContactsContext.Provider value={{ contacts, addContacts }}>
+        <ContactsContext.Provider value={{ contacts, setContacts }}>
             {children}
         </ContactsContext.Provider>
     )
 }
 
-export default useContacts = () => { useContext(ContactsContext)}
+export default ContactsContext
