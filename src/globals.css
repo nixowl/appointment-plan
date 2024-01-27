@@ -11,6 +11,37 @@ body,html,:root {
     @apply flex flex-col h-full ;
   }
 
+  /* width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-slate-900
+
+}/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 13px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-transparent
+}
+
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary/90
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-primary rounded-xl
+}
 
 @layer base {
   :root {
