@@ -1,7 +1,10 @@
 import { Contact } from "@/types"
 
+type ContactCardProps = Contact & {
+    onClick: () => void
+}
 
-export const ContactCard = ({ givenName, familyName, email, phone }: Contact) => {
+export const ContactCard = ({ givenName, familyName, email, phone, onClick }: ContactCardProps) => {
     const firstInitial = givenName[0]
     const surnameInitial = familyName[0]
     const capsGivenName = givenName[0].toUpperCase() + givenName.slice(1)
