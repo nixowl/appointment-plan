@@ -4,11 +4,11 @@
 
 
 body,html,:root {
-  @apply bg-gradient-to-bl from-red-200 via-purple-700 to-blue-500 dark:bg-transparent h-full;
+  @apply bg-gradient-to-bl from-red-200 via-purple-700 to-blue-500 dark:bg-transparent bg-fixed m-0 h-full;
 } 
 
  #root {
-    @apply flex flex-col h-full ;
+    @apply flex flex-col h-full dark:h-full;
   }
 
   /* width */

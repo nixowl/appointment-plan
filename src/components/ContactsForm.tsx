@@ -21,7 +21,6 @@ export const ContactsForm = () => {
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
     const { contacts, setContacts } = useContext(ContactsContext)
-    
 
     // // Contact form validation
     // const formSchema = z.object({
@@ -37,19 +36,15 @@ export const ContactsForm = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if (!givenName && !familyName && !email && !phone) return;
-        console.log('click')
-        console.log(contacts)
+        if (!givenName && !familyName && !email && !phone) return
+
         const newContact: Contact = {
             givenName: givenName,
             familyName: familyName,
             email: email,
             phone: phone,
         }
-        console.log(newContact)
-
         setContacts([...contacts, newContact])
-        console.log(contacts)
     }
 
     return (
@@ -63,51 +58,61 @@ export const ContactsForm = () => {
                 </CardHeader>
                 <CardContent className="space-y-2">
                     <form onSubmit={handleSubmit}>
-                        <div className="space-y-1">
-                            <Label htmlFor="given-name">First name</Label>
-                            <Input
-                                autoComplete="given-name"
-                                id="given-name"
-                                type="text"
-                                placeholder="John"
-                                value={givenName}
-                                onChange={(e) => setGivenName(e.target.value)}
-                            />
-                            <Label htmlFor="last-name">Last name</Label>
-                            <Input
-                                autoComplete="family-name"
-                                id="last-name"
-                                type="text"
-                                placeholder="Doe"
-                                value={familyName}
-                                onChange={(e) => setFamilyName(e.target.value)}
-                            />
-                        </div>
-                        <div className="space-y-1">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                autoComplete='email'
-                                id="email"
-                                placeholder="johndoe@mail.com"
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
-                        <div className="space-y-1">
-                            <Label htmlFor="phone">Phone number</Label>
-                            <Input
-                                autoComplete='tel'
-                                id="phone"
-                                placeholder="555-555-5555"
-                                type="tel"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                            />
-                        </div>
-                        <Button variant="default" type="submit">
-                            Add contact
-                        </Button>
+                        <section className="flex gap-2 justify-center items-center">
+                            <div>
+                                <Label htmlFor="given-name">First name</Label>
+                                <Input
+                                    autoComplete="given-name"
+                                    id="given-name"
+                                    type="text"
+                                    placeholder="John"
+                                    value={givenName}
+                                    onChange={(e) =>
+                                        setGivenName(e.target.value)
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="last-name">Last name</Label>
+                                <Input
+                                    autoComplete="family-name"
+                                    id="last-name"
+                                    type="text"
+                                    placeholder="Doe"
+                                    value={familyName}
+                                    onChange={(e) =>
+                                        setFamilyName(e.target.value)
+                                    }
+                                />
+                            </div>
+                        </section>
+                        <section className="flex flex-col justify-center items-center">
+                            <section className="space-y-1">
+                                <Label htmlFor="email">Email</Label>
+                                <Input
+                                    autoComplete="email"
+                                    id="email"
+                                    placeholder="johndoe@mail.com"
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </section>
+                            <section className="space-y-1">
+                                <Label htmlFor="phone">Phone number</Label>
+                                <Input
+                                    autoComplete="tel"
+                                    id="phone"
+                                    placeholder="555-555-5555"
+                                    type="tel"
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                />
+                            </section>
+                            <Button variant="default" type="submit">
+                                Add contact
+                            </Button>
+                        </section>
                     </form>
                 </CardContent>
 

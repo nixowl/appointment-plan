@@ -7,7 +7,7 @@ export type Contact = {
 
 export type Appointment = {
     contact: Contact;
-    date: string;
+    date: Date | undefined;
     time: string;
 }
 
