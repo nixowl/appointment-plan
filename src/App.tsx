@@ -17,7 +17,7 @@ function App() {
                 >
                     <ThemeToggle />
                     <div className="flex justify-center h-full">
-                        <Tabs defaultValue="contacts" className="w-[60%] ">
+                        <Tabs defaultValue="contacts" className="w-[90%]">
                             <TabsList className="grid w-full grid-cols-2 bg-primary-foreground/60 border border-white/50 rounded-md ">
                                 <TabsTrigger value="contacts">
                                     Contacts
