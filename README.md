@@ -8,12 +8,13 @@ The goal of this project is to practice React and passing down props. The provid
 
 ## To-do
 
-- [x] Make appointments form functional
+- [ ] Make appointments form functional
 - [ ] Add form validation for contacts form
+- [ ] Button to delete contacts/appointments
 
 ## Features
 
-- Allows users to create appointments by filling out a form
+- Allows users to create appointments and contacts by filling out a form
 - Displays a list of appointments with their details
 - Provides the ability to delete appointments
 
