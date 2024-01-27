@@ -10,3 +10,7 @@ export type Appointment = {
     date: string;
     time: string;
 }
+
+export type Props = {
+    children: React.ReactNode
+}
