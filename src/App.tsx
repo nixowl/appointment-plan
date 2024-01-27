@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ThemeProvider } from 'next-themes'
-import { ThemeToggle } from './components/theme-toggle'
+import { ThemeToggle } from './components/ui/theme-toggle'
 import { ContactsForm } from './components/ContactsForm'
 import { AppointmentsForm } from './components/AppointmentsForm'
 import { ContactsProvider } from './components/context/ContactsContext'
