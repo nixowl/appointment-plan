@@ -7,79 +7,43 @@ import {
     CardHeader,
     CardTitle,
 } from './ui/card'
-import { Input } from './ui/input'
-import { Calendar } from '@/components/ui/calendar'
+import CalendarComponent from './CalendarComponent'
 import { useContext, useState } from 'react'
 import ContactsContext from './context/ContactsContext'
-import { ContactCard } from './ContactCard'
+import { useCalendar } from './hooks/useCalendar'
 import { Appointment, Contact } from '@/types'
+import { ContactCardAppointments } from './ContactCardAppointments'
+import { Input } from './ui/input'
+import { Label } from './ui/label'
+import { Textarea } from './ui/textarea'
+import { AppointmentCard } from './ui/AppointmentCard'
 
 export const AppointmentsForm = () => {
-
-    const [selected, setSelected] = useState<Date>();
-    const [timeValue, setTimeValue] = useState<string>('00:00')
-    const [selectedContact, setSelectedContact] = useState<Contact | undefined>(undefined)
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+    const [selectedContact, setSelectedContact] = useState<Contact>()
     const [appointments, setAppointments] = useState<Appointment[]>([])
     const { contacts } = useContext(ContactsContext)
+    const { selected, timeValue } = useCalendar()
 
-    const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        const time = e.target.value
-        
-         if (!selected) {
-             setTimeValue(time)
-             return
-        }
-        
-         const [hours, minutes] = time
-             .split(':')
-            .map((str) => parseInt(str, 10))
-        
-         const newSelectedDate = new Date(
-             selected.getFullYear(),
-             selected.getMonth(),
-             selected.getDate(),
-             hours,
-             minutes
-         )
-         setSelected(newSelectedDate)
-         setTimeValue(time)
-     }
-
-    const handleDaySelect = (date: Date | undefined) => {
-         
-         if (!timeValue || !date) {
-             setSelected(date)
-             return
-        }
-        
-         const [hours, minutes] = timeValue
-             .split(':')
-             .map((str) => parseInt(str, 10))
-         const newDate = new Date(
-             date.getFullYear(),
-             date.getMonth(),
-             date.getDate(),
-             hours,
-             minutes
-         )
-         setSelected(newDate)
-     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!selectedContact || !selected) return
-
+        if (!selectedContact || !selected || !timeValue) {
+            console.error('Please select a contact, date, and time.')
+            return
+        }
         const newAppointment: Appointment = {
+            title: title,
+            description: description,
             contact: selectedContact,
             date: selected,
             time: timeValue
         }
         setAppointments([...appointments, newAppointment])
+        console.log(appointments, 'things')
     }
-
-    const handleContactSelect = (contact: Contact) => setSelectedContact(contact);
-
     
 
     return (
@@ -90,14 +54,37 @@ export const AppointmentsForm = () => {
                     Add new appointments here. Save to add to list.
                 </CardDescription>
             </CardHeader>
-            <CardContent className="flex justify-center">
-                <form onSubmit={handleSubmit} className="flex flex-col">
-                    <div className="flex gap-4">
-                        <div className="flex flex-col gap-4 max-h-[30rem] overflow-y-scroll rounded-md border p-4">
-                            {contacts.map((contact, index) => (
-                                <ContactCard
-                                    onClick={() => handleContactSelect(contact)}
-                                    key={index}
+            <CardContent>
+                <form
+                    onSubmit={handleSubmit}
+                    className="flex flex-col justify-center items-center gap-3"
+                >
+                    <section className="flex flex-col justify-center gap-4 w-[80%]">
+                        <div>
+                            <Label htmlFor="title">Title</Label>
+                            <Input
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                id="title"
+                                placeholder="Appointment title"
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="description">Description</Label>
+                            <Textarea
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                id="description"
+                                placeholder="Appointment description"
+                            />
+                        </div>
+                    </section>
+                    <div className="flex justify-around gap-4">
+                        <div className="flex flex-row flex-wrap justify-items-center bg-red-500 gap-5 max-h-[23.3rem] max-w-[60rem] overflow-y-scroll rounded-md border p-4">
+                            {contacts.map((contact) => (
+                                <ContactCardAppointments
+                                    onClick={() => setSelectedContact(contact)}
+                                    key={contact.id}
                                     givenName={contact.givenName}
                                     familyName={contact.familyName}
                                     email={contact.email}
@@ -105,42 +92,23 @@ export const AppointmentsForm = () => {
                                 />
                             ))}
                         </div>
-                        <div className="">
-                            <Calendar
-                                mode="single"
-                                selected={selected}
-                                onSelect={handleDaySelect}
-                                className="flex justify-center rounded-md border"
-                                footer={
-                                    <>
-                                        <Input
-                                            type="time"
-                                            value={timeValue}
-                                            onChange={handleTimeChange}
-                                        />
-                                        <p>
-                                            {' '}
-                                            Selected date:{' '}
-                                            {selected
-                                                ? selected.toLocaleString()
-                                                : 'none'}
-                                        </p>
-                                    </>
-                                }
-                            />
-                        </div>
+                        <CalendarComponent />
                     </div>
-                    <Button>Add appointment</Button>
+                    <Button className="w-1/2" type="submit">
+                        Add appointment
+                    </Button>
                 </form>
             </CardContent>
 
             <Separator />
             <CardHeader>
                 <CardTitle>Appointments</CardTitle>
-                <CardDescription>List of appointments</CardDescription>
+                <CardDescription></CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-               
+                {appointments.map((appointment, index) => (
+                    <AppointmentCard key={index} appointment={appointment} />
+                ))}
             </CardContent>
         </Card>
     )

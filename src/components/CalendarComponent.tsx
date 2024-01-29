@@ -1,11 +1,10 @@
-import { useState } from "react"
 import { Calendar } from '@/components/ui/calendar'
 import { Input } from './ui/input'
+import { useCalendar } from './hooks/useCalendar';
 
 const CalendarComponent = () => {
+    const { selected, setSelected, timeValue, setTimeValue } = useCalendar();
 
-    const [selected, setSelected] = useState<Date>()
-    const [timeValue, setTimeValue] = useState<string>('00:00')
     const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (
         e
     ) => {

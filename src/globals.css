@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+font-family: 'monseratt';
+src: url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+}
+@font-face {
+font-family: 'monseratt';
+src: url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+font-weight: 600;
+}
+@font-face {
+font-family: 'raleway';
+src: url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+font-weight: 800;
+}
 
 body,html,:root {
   @apply bg-gradient-to-bl from-red-200 via-purple-700 to-blue-500 dark:bg-transparent bg-fixed m-0 h-full;
@@ -43,7 +57,15 @@ body,html,:root {
   @apply bg-primary rounded-xl
 }
 
+#appointmentContacts:hover {
+  cursor: pointer;
+}
+
 @layer base {
+  html {
+    font-family: "raleway", sans-serif;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;

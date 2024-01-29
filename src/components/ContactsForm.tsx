@@ -1,4 +1,3 @@
-import { Separator } from '@radix-ui/react-separator'
 import { Button } from './ui/button'
 import {
     Card,
@@ -39,6 +38,7 @@ export const ContactsForm = () => {
         if (!givenName && !familyName && !email && !phone) return
 
         const newContact: Contact = {
+            id: Math.floor(Math.random() * 10001),
             givenName: givenName,
             familyName: familyName,
             email: email,
@@ -49,17 +49,17 @@ export const ContactsForm = () => {
 
     return (
         <>
-            <Card className="flex flex-col p-7 border rounded-md max-h-[87vh]">
+            <Card className="flex flex-col p-7 border rounded-md">
                 <CardHeader>
                     <CardTitle>Contacts</CardTitle>
                     <CardDescription>
                         Add new contacts here. Save to add to list.
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2">
-                    <form onSubmit={handleSubmit}>
-                        <section className="flex gap-2 justify-center items-center">
-                            <div>
+                <CardContent>
+                    <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center w-full border rounded-md p-4">
+                        <section className="flex gap-2 justify-center items-center w-[80%]">
+                            <div className="w-full">
                                 <Label htmlFor="given-name">First name</Label>
                                 <Input
                                     autoComplete="given-name"
@@ -72,7 +72,7 @@ export const ContactsForm = () => {
                                     }
                                 />
                             </div>
-                            <div>
+                            <div className="w-full">
                                 <Label htmlFor="last-name">Last name</Label>
                                 <Input
                                     autoComplete="family-name"
@@ -115,13 +115,11 @@ export const ContactsForm = () => {
                         </section>
                     </form>
                 </CardContent>
-
-                <Separator />
                 <CardHeader>
                     <CardTitle>Contacts</CardTitle>
                     <CardDescription>List of contacts</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2 max-h-[30rem] overflow-y-scroll border rounded-md p-6">
+                <CardContent className="flex flex-col gap-2 max-h-[40rem] overflow-y-scroll border rounded-md p-6">
                     {contacts.map((contact, index) => (
                         <ContactCard
                             key={index}
